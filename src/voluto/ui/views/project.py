@@ -17,16 +17,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ################################################################
 
-from django.conf.urls import patterns, include, url
-from voluto.ui.views import home, project
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 
-urlpatterns = patterns('',
+from voluto.common.decorators import render_to
 
-	# Landing page
-	url(r'^$', 								home.landing, 			name="home.landing"),
-
-	# Project management
-	url(r'^project/list$', 					project.list, 			name="project.list"),
-
-
-)
+@render_to("project/list.html")
+def list(self):
+	"""
+	The project listing
+	"""
+	return { }

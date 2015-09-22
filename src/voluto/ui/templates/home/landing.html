@@ -2,4 +2,7 @@
 {% block content %}
 	<h1>Hello world!</h1>
 	<p>This is a test.</p>
+	<p>
+		<a href="{% url 'project.list' %}" class="btn btn-default">Jump to project listing</a>
+	</p>
 {% endblock %}
