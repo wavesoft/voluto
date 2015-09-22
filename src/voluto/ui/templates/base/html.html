@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}Voluto{% endblock %}</title>
+    {% block head %}{% endblock %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static "static/ui/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "static/ui/css/bootstrap-theme.min.css" %}" rel="stylesheet">
+    <link href="{% static "static/ui/css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "static/ui/css/voluto-ui.less" %}" rel="stylesheet">
+    {% block css %}{% endblock %}
+  </head>
+  <body style="{% block body_style %}{% endblock %}">
+    {% block header %}{% endblock %}
+    {% block body %}{% endblock %}
+    {% block footer %}{% endblock %}
+    <script type="text/javascript" src="{% static "lib/js/jquery-2.1.4.js" %}"></script>
+    <script type="text/javascript" src="{% static "lib/js/bootstrap.min.js" %}"></script>
+    {% block javascript %}{% endblock %}
+  </body>
+</html>
