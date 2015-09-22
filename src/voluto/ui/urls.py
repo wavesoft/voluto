@@ -18,9 +18,11 @@
 ################################################################
 
 from django.conf.urls import patterns, include, url
-from voluto.ui.views import home, project
+from voluto.ui.views import home
 
 urlpatterns = patterns('',
-	url(r'^$', 								home.home, 			name="home.home"),
+
+	# Landing page
+	url(r'^$', 								home.landing, 			name="home.landing"),
 
 )
