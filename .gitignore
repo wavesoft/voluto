@@ -60,3 +60,4 @@ target/
 src/etc/*.sqlite3
 src/etc/voluto.py
 src/static/*
+src/temp/*

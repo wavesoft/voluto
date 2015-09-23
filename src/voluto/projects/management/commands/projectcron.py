@@ -17,15 +17,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ################################################################
 
-from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+import time
+import logging
+from django.core.management.base import BaseCommand, CommandError
 
-from voluto.common.decorators import render_to
+# Get a logger
+logger = logging.getLogger(__name__)
 
-@render_to("ui/home/landing.html")
-def landing(self):
-	"""
-	The landing page
-	"""
-	return { }
+class Command(BaseCommand):
+	help = 'Process all pending actions regarding the projects.'
+
+	def handle(self, *args, **options):
+		"""
+		Execute the project cron command
+		"""
+
+		return
 

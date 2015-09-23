@@ -1,0 +1,102 @@
+{% comment %}
+############################################################################
+
+	Mix-in template used within a grp-option-selector element
+	in order to form some pretty, expandable selections with rapid
+	configuration.
+
+############################################################################
+
+	Use it like this:
+
+	<div class="grp-option-selector">
+		{ % include "snippet/group-option.html" with group=... % }
+	</div>
+
+	Each group is expected to be an object with the following fields:
+
+	{
+
+	  # Required
+
+	  'id'			: 'computer-redable-id',
+	  'title'		: 'Group Title',
+	  'form'		: TheDjangoFormInstance(),
+
+	  # Styling
+
+	  'color'		: 1,		# The color set to use (1,2 or 3)
+	
+	  # Behaviour
+
+	  'radiogroup'	: 'name',	# Convert it to a radio box
+	  'link-check'	: 'id',		# When checked, check the specified ID
+	  'link-enable'	: 'id',		# Whenc hecked, enable the specified ID
+
+	  # Information
+
+	  'description'	: 'Additional description to display when expanded',
+	  'environment' : [
+	     { 'name': 'ENV_VARIABLE_NAME', 'description': 'Description of the variable' },
+	  ],
+
+	}
+
+	NOTE: The snipped requires a BooleanField with a label 'enabled' to be present. This
+	      field will control the status of the group.
+	
+############################################################################
+{% endcomment %}
+<div class="grp-option grp-color-{{group.color|default:"1"}}">
+
+	{# The checkbox is used to control the visibility of the elements #}	
+	<input type="checkbox" id="grp-{{group.id}}" 
+		{% if group.form.enabled.value %}checked="checked"{% endif %}
+		{% if group.radiogroup %}data-radio-group="{{group.radiogroup}}"{% endif %} 
+		{% if group.link_check %}data-link-check="#grp-{{group.link_check}}"{% endif %}
+		{% if group.link_enable %}data-link-enable="#grp-{{group.link_enable}}"{% endif %}
+		value="1" name="{{group.form.enabled.html_name}}"  />
+
+	{# The label is the handler to the group #}
+	<label for="grp-{{group.id}}">
+		<span class="opt-check-icon"></span> {{group.title|safe}}
+	</label>
+
+	{# Here is the contents of the dropdown panel (NOTE: max 500px height) #}
+	<div class="grp-content">
+
+		{# We use a row in order to have columns inside #}
+		<div class="row">
+			<div class="col-sm-7">
+
+				{# The control element is where the input items are going #}
+				<div class="grp-control">
+					<div class="">
+						{% include "snippet/form.html" with form=group.form hide="Enabled" %}
+					</div>
+				</div>
+
+			</div>
+			<div class="col-sm-5">
+
+				{# The detail is where the description of the input goes #}
+				<div class="grp-detail">
+
+					{% if group.description %}
+						<p>{{group.description}}<br />
+					{% endif %}
+
+					{% if group.environment %}
+						<p>Exposes environment variables:</p>
+						<ul class="list-unstyled">
+							{% for env in group.environment %}
+							<li><strong>{{env.name}} :</strong><br /> {{env.description}}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

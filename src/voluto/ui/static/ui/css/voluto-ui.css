@@ -1,0 +1,118 @@
+.tab-pane {
+  padding: 10px;
+}
+div.grp-option-selector div.grp-option > input {
+  visibility: hidden;
+  position: absolute;
+}
+div.grp-option-selector div.grp-option > input:checked + label + div.grp-content {
+  max-height: 500px;
+}
+div.grp-option-selector div.grp-option > input:disabled:checked + label {
+  background-color: #ffffff !important;
+}
+div.grp-option-selector div.grp-option > input:disabled:checked + label span.opt-check-icon {
+  background-color: #a6a6a6 !important;
+}
+div.grp-option-selector div.grp-option > input:disabled + label {
+  color: #cccccc;
+  border-color: #cccccc !important;
+}
+div.grp-option-selector div.grp-option > input:disabled + label span.opt-check-icon {
+  border-color: #cccccc !important;
+}
+div.grp-option-selector div.grp-option > input:disabled + label + div.grp-content {
+  border-color: #ffffff !important;
+}
+div.grp-option-selector div.grp-option > label {
+  display: block;
+  padding: 5px;
+  cursor: pointer;
+  border-width: 8px;
+  border-style: none none none solid;
+  margin: 0;
+}
+div.grp-option-selector div.grp-option > label span.opt-check-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  float: left;
+  border-style: solid;
+  border-width: 3px;
+  margin-right: 7px;
+  border-radius: 4px;
+  background-color: #FFF;
+  border-color: #FFF;
+}
+div.grp-option-selector div.grp-option > label:hover span.opt-check-icon {
+  background-color: #DDD;
+}
+div.grp-option-selector div.grp-option > div.grp-content {
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: max-height 0.25s;
+  -moz-transition: max-height 0.25s;
+  -ms-transition: max-height 0.25s;
+  -o-transition: max-height 0.25s;
+  -transition: max-height 0.25s;
+  margin-bottom: 4px;
+  border-width: 8px;
+  border-style: none none none solid;
+}
+div.grp-option-selector div.grp-option > div.grp-content div.grp-control {
+  padding: 4px;
+}
+div.grp-option-selector div.grp-option > div.grp-content div.grp-detail {
+  padding: 4px 0 0 5px;
+  border-left: solid 1px #CCC;
+  font-size: 0.8em;
+}
+div.grp-option-selector div.grp-option > div.grp-content div.grp-detail > ul {
+  margin-top: 4px;
+}
+div.grp-option-selector div.grp-option.grp-color-1 > input:checked + label {
+  background-color: #fceedb;
+}
+div.grp-option-selector div.grp-option.grp-color-1 > input:checked + label span.opt-check-icon {
+  background-color: #df8a13;
+}
+div.grp-option-selector div.grp-option.grp-color-1 > label {
+  border-color: #f0ad4e;
+}
+div.grp-option-selector div.grp-option.grp-color-1 > label span.opt-check-icon {
+  border-color: #f0ad4e;
+}
+div.grp-option-selector div.grp-option.grp-color-1 > label + div.grp-content {
+  border-color: #fae3c4;
+}
+div.grp-option-selector div.grp-option.grp-color-2 > input:checked + label {
+  background-color: #9fc4e4;
+}
+div.grp-option-selector div.grp-option.grp-color-2 > input:checked + label span.opt-check-icon {
+  background-color: #22527b;
+}
+div.grp-option-selector div.grp-option.grp-color-2 > label {
+  border-color: #337ab7;
+}
+div.grp-option-selector div.grp-option.grp-color-2 > label span.opt-check-icon {
+  border-color: #337ab7;
+}
+div.grp-option-selector div.grp-option.grp-color-2 > label + div.grp-content {
+  border-color: #8bb8df;
+}
+div.grp-option-selector div.grp-option.grp-color-3 > input:checked + label {
+  background-color: #f4cecd;
+}
+div.grp-option-selector div.grp-option.grp-color-3 > input:checked + label span.opt-check-icon {
+  background-color: #b52b27;
+}
+div.grp-option-selector div.grp-option.grp-color-3 > label {
+  border-color: #d9534f;
+}
+div.grp-option-selector div.grp-option.grp-color-3 > label span.opt-check-icon {
+  border-color: #d9534f;
+}
+div.grp-option-selector div.grp-option.grp-color-3 > label + div.grp-content {
+  border-color: #f0b9b8;
+}

@@ -3,3 +3,4 @@ requests>=2.5.0
 Django>=1.8.0
 django-tinymce>=1.5.3
 MySQL-python>=1.2.5
+django-widget-tweaks>=1.4.1

@@ -17,15 +17,36 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ################################################################
 
-from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+import json
+from voluto.projects.models import *
 
-from voluto.common.decorators import render_to
-
-@render_to("ui/home/landing.html")
-def landing(self):
+def push( project, data, log=None, user=None, level=ProjectLog.INFO ):
 	"""
-	The landing page
+	Push some data and optionally create a log entry
 	"""
-	return { }
 
+	# Create action
+	action = ProjectActions(data=json.dumps(data), project=project)
+	action.save()
+
+	# Create log entry
+	if (not user is None) and (not log is None):
+		log_entry = ProjectLog(project=project, user=user, text=log, level=level)
+		log_entry.save()
+
+def pop():
+	"""
+	Pop a data entry from the database and reurn a (project, data) tuple
+	"""
+
+	# Get next 
+	try:
+		action = ProjectActions.objects.all().order_by('id')[0]
+	except IndexError:
+		return None
+
+	# Decode and return
+	return (
+		'project': action.project,
+		'data': json.loads(action.data)
+	)

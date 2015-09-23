@@ -3,7 +3,16 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ETC_DIR = os.path.dirname(os.path.abspath(__file__))
+ETC_DIR = os.path.join( BASE_DIR, "etc" )
+
+# ========================
+# Production Configuration
+# ========================
+
+# SECURITY WARNING: don't run with debug turned on in production!
+
+DEBUG = True
+ALLOWED_HOSTS = [ '127.0.0.1', 'localhost' ]
 
 # ========================
 # Database Configuration
@@ -20,6 +29,24 @@ DATABASES = {
 }
 
 # ========================
+# Interop Configuration
+# ========================
+
+# URL to the Celery broker to use for interoperation
+# with the other distributed components
+INTEROP_BROKER = 'amqp://guest@localhost//'
+
+# The shared folder with other components
+INTEROP_SHARED_DIR = os.path.join( os.path.join( BASE_DIR, "temp" ), "shared" )
+
+# ========================
+# File Management
+# ========================
+
+# Scratch space where intermediate files are placed
+TEMP_DIR = os.path.join( BASE_DIR, "temp" )
+
+# ========================
 # Webserver Configuration
 # ========================
 
@@ -31,7 +58,7 @@ STATIC_ROOT = os.path.join( BASE_DIR, "static" )
 STATIC_URL = '/static/'
 
 # ========================
-# Local information
+# Locale configuration
 # ========================
 
 # Default language to use

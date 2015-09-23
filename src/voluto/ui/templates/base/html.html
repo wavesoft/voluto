@@ -10,7 +10,7 @@
     <link href="{% static "ui/css/bootstrap.min.css" %}" rel="stylesheet">
     <link href="{% static "ui/css/bootstrap-theme.min.css" %}" rel="stylesheet">
     <link href="{% static "ui/css/font-awesome.min.css" %}" rel="stylesheet">
-    <link href="{% static "ui/css/voluto-ui.less" %}" rel="stylesheet">
+    <link href="{% static "ui/css/voluto-ui.css" %}" rel="stylesheet">
     {% block css %}{% endblock %}
   </head>
   <body style="{% block body_style %}{% endblock %}">
@@ -19,6 +19,7 @@
     {% block footer %}{% endblock %}
     <script type="text/javascript" src="{% static "ui/js/jquery-2.1.4.min.js" %}"></script>
     <script type="text/javascript" src="{% static "ui/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "ui/js/voluto.js" %}"></script>
     {% block javascript %}{% endblock %}
   </body>
 </html>

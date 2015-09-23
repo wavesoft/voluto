@@ -23,10 +23,14 @@ from voluto.ui.views import home, project
 urlpatterns = patterns('',
 
 	# Landing page
-	url(r'^$', 								home.landing, 			name="home.landing"),
+	url(r'^$', 											home.landing, 			name="home.landing"),
 
 	# Project management
-	url(r'^project/list$', 					project.list, 			name="project.list"),
-
+	url(r'^project/list$', 								
+		project.list, 			name="project.list"),
+	url(r'^project/manage/(?P<project>[^/]+)/$', 		
+		project.manage, 		name="project.manage"),
+	url(r'^project/manage/(?P<project>[^/]+)/publish/(?P<revision>[^/]+)/$',
+		project.manage_publish,	name="project.manage.publish"),
 
 )

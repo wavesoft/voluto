@@ -1,0 +1,197 @@
+
+.tab-pane {
+	padding: 10px;
+}
+
+////////////////////////////////////////
+// Option Selector Helper
+////////////////////////////////////////
+
+@opt-color-disabled: #CCCCCC;
+@opt-color-1: #f0ad4e;
+@opt-color-2: #337ab7;
+@opt-color-3: #d9534f;
+
+// The option group selector container
+div.grp-option-selector {
+
+	// each option is in an individual div
+	div.grp-option {
+
+		// We use the input element as a toggler of
+		// the rest of the option group
+		> input {
+
+			// Hide the option
+			visibility: hidden;
+			position: absolute;
+
+			// Expand content div upon selecting
+			&:checked + label {
+				+ div.grp-content {
+					max-height: 500px;
+				}
+			}
+
+			// Disabled group
+			&:disabled {
+				&:checked + label {
+					background-color: lighten(@opt-color-disabled, 30%) !important;
+					span.opt-check-icon {
+						background-color: darken(@opt-color-disabled, 15%) !important;
+					}
+				}
+				+ label {
+					color: @opt-color-disabled;
+					border-color: @opt-color-disabled !important;
+					span.opt-check-icon {
+						border-color: @opt-color-disabled !important;
+					}
+					+ div.grp-content {
+						border-color: lighten(@opt-color-disabled, 25%) !important;
+					}
+				}
+			}
+
+		}
+
+		// Default label styling
+		> label {
+
+			// Position styling
+			display: block;
+			padding: 5px;
+			cursor: pointer;
+
+			// Strong left border
+			border-width: 8px;
+			border-style: none none none solid;
+			margin: 0;
+			
+			// Default checkbox icon
+			span.opt-check-icon {
+
+				// Positioning
+				width: 18px;
+				height: 18px;
+				display: block;
+				float: left;
+			
+				// Border
+				border-style: solid;
+				border-width: 3px;
+				margin-right: 7px;
+				border-radius: 4px;
+				
+				// Default colors
+				background-color: #FFF;
+				border-color: #FFF;
+
+			}
+			
+			// Hover coloring of the checkbox
+			&:hover span.opt-check-icon {
+				background-color: #DDD;
+			}
+
+		}
+
+		// Default group styling
+		> div.grp-content {
+
+			// Transition helpers: Default collapsed
+			display: block;
+			max-height: 0;
+			overflow: hidden;
+			-webkit-transition: max-height 0.25s;
+			-moz-transition: max-height 0.25s;
+			-ms-transition: max-height 0.25s;
+			-o-transition: max-height 0.25s;
+			-transition: max-height 0.25s;
+
+			// For visual spacing
+			margin-bottom: 4px;
+
+			// Left border
+			border-width: 8px;
+			border-style: none none none solid;
+			
+			// The control elements sub-group
+			div.grp-control {
+				padding: 4px;
+			}
+
+			// The detail sub-group
+			div.grp-detail {
+				padding: 4px 0 0 5px;
+				border-left: solid 1px #CCC;
+				font-size: 0.8em;
+				> ul {
+					margin-top: 4px;
+				}
+			}
+
+		}
+
+		// Group colors
+		&.grp-color-1 {
+			> input {
+				&:checked + label {
+					background-color: lighten(@opt-color-1, 30%);
+					span.opt-check-icon {
+						background-color: darken(@opt-color-1, 15%);
+					}
+				}
+			}
+			> label {
+				border-color: @opt-color-1;
+				span.opt-check-icon {
+					border-color: @opt-color-1;
+				}
+				+ div.grp-content {
+					border-color: lighten(@opt-color-1, 25%);
+				}
+			}
+		}
+		&.grp-color-2 {
+			> input {
+				&:checked + label {
+					background-color: lighten(@opt-color-2, 30%);
+					span.opt-check-icon {
+						background-color: darken(@opt-color-2, 15%);
+					}
+				}
+			}
+			> label {
+				border-color: @opt-color-2;
+				span.opt-check-icon {
+					border-color: @opt-color-2;
+				}
+				+ div.grp-content {
+					border-color: lighten(@opt-color-2, 25%);
+				}
+			}
+		}
+		&.grp-color-3 {
+			> input {
+				&:checked + label {
+					background-color: lighten(@opt-color-3, 30%);
+					span.opt-check-icon {
+						background-color: darken(@opt-color-3, 15%);
+					}
+				}
+			}
+			> label {
+				border-color: @opt-color-3;
+				span.opt-check-icon {
+					border-color: @opt-color-3;
+				}
+				+ div.grp-content {
+					border-color: lighten(@opt-color-3, 25%);
+				}
+			}
+		}
+
+	}
+
+}

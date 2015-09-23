@@ -1,0 +1,152 @@
+{% extends "base/full.html" %}
+{% block content %}
+	<h1>Project Management</h1>
+
+	{% if error %}
+		<div class="alert alert-danger" role="alert">
+		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		  <span class="sr-only">Error:</span>
+		  {{ error }}
+		</div>
+	{% endif %}
+
+	<div class="row">
+		<div class="col-sm-6">
+
+			<h2>File Revisions</h2>
+			<table class="table table-condensed">
+				<tr>
+					<th>Revision</th>
+					<th>Date</th>
+					<th>Status</th>
+					<th>Activate</th>
+				</tr>
+				{% if files %}
+					{% for file in files %}
+					<tr class="{% if file == project.files %}bg-danger{% endif %}"> 
+						<td>{{ file.number }}</td>
+						<td>{{ file.date }}</td>
+						<td>
+							{% if file.status == "PE" %}
+							<span class="text-muted">Pending</span>
+							{% elif file.status == "ST" %}
+							<span class="text-warning">Staging...</span>
+							{% elif file.status == "PU" %}
+							<span class="text-danger">Published</span>
+							{% elif file.status == "RE" %}
+							<span class="text-muted">Retired</span>
+							{% endif %}
+						</td>
+						<td>
+							{% if file == project.files %}
+							<span class="label label-danger">In production</span>
+							{% else %}
+								{% if file.status == "PE" %}
+									<a href="{% url 'project.manage.publish' project=project.uuid revision=file.id %}" class="btn btn-xs btn-default">Publish</a>
+								{% elif file.status == "PU" %}
+									<a href="{% url 'project.manage.publish' project=project.uuid revision=file.id %}" class="btn btn-xs btn-primary">Activate</a>
+								{% endif %}
+							{% endif %}
+						</td>
+					</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td colspan="4" class="text-muted text-center">No files in the project</td>
+					</tr>
+				{% endif %}
+			</table>
+	
+			<!-- File management form -->
+			<div>
+
+			  <!-- Nav tabs -->
+			  <ul class="nav nav-tabs" role="tablist">
+			    <li role="presentation" class="active"><a href="#import-upload" aria-controls="import-upload" role="tab" data-toggle="tab">Upload</a></li>
+			    <li role="presentation"><a href="#import-git" aria-controls="import-git" role="tab" data-toggle="tab">GIT</a></li>
+			    <li role="presentation"><a href="#import-svn" aria-controls="import-svn" role="tab" data-toggle="tab">SVN</a></li>
+			  </ul>
+
+			  <!-- Tab panes -->
+			  <div class="tab-content">
+			    <div role="tabpanel" class="tab-pane active" id="import-upload">
+
+					<form action="?form=import-upload" class="form-horizontal" enctype="multipart/form-data" method="post">
+						{% csrf_token %}
+						<div class="row">
+							<div class="col-sm-9">
+								<input type="file" name="file" class="form-control" />
+							</div>
+							<div class="col-sm-3">
+								<input type="submit" class="btn btn-default btn-block" value="Import" />
+							</div>
+						</div>
+					</form>
+
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="import-git">
+
+					<form action="?form=import-git" method="post">
+						{% csrf_token %}
+						<div class="row">
+							<div class="col-sm-9">
+								<div class="form-group">
+									<label for="import-git-url">GIT repository:</label>
+									<input type="text" class="form-control" name="git-url" id="import-git-url" placeholder="ex. https://github.com/user/repos.git">
+								</div>
+								<div class="form-group">
+									<label for="import-git-tag">Tag:</label>
+									<input type="text" class="form-control" name="git-tag" value="master" id="import-git-tag" placeholder="ex. master">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<label>&nbsp;</label>
+								<input type="submit" class="btn btn-default btn-block" value="Import" />
+							</div>
+						</div>
+					</form>
+
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="import-svn">
+					
+					<form action="?form=import-svn" method="post">
+						{% csrf_token %}
+						<div class="row">
+							<div class="col-sm-9">
+								<div class="form-group">
+									<label for="import-svn-url">SVN repository:</label>
+									<input type="text" class="form-control" name="svn-url" id="import-svn-url" placeholder="ex. svn://repository.com/repos">
+								</div>
+								<div class="form-group">
+									<label for="import-svn-revision">Revision:</label>
+									<input type="text" class="form-control" name="svn-tag" value="head" id="import-svn-revision" placeholder="ex. head">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<label>&nbsp;</label>
+								<input type="submit" class="btn btn-default btn-block" value="Import" />
+							</div>
+						</div>
+					</form>
+
+			    </div>
+			  </div>
+
+			</div>
+
+		</div>
+		<div class="col-sm-6">
+
+			<h2>Queue Configuration</h2>
+			<div class="grp-option-selector">
+				
+				{% for grp in groups %}
+					{% include "snippet/group-option.html" with group=grp %}
+				{% endfor %}
+
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}

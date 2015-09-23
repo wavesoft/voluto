@@ -1,0 +1,77 @@
+{% comment %}
+############################################################################
+
+	Mix-in template for rendering django forms.
+
+############################################################################
+
+	Use it like this:
+
+	{ % include "snippet/form.html" with form=... [size=9] [hide="field"] % }
+
+	The optional 'size' parameter assumes that you are using .form-horizontal
+	in the parent element and you want to specify the size of the control width
+	in Bootstrap Columns. The template itself will resize the labels automatically.
+
+	The optional 'hide' parameter will convert one of the specified fields
+	into a hidden fiendl.
+
+############################################################################
+{% endcomment %}
+{% load widget_tweaks %}
+
+{# Form errors #}
+{% if form.subject.errors %}
+	<div class="form-group">
+		<div class="alert alert-danger" role="alert">
+			{% for error in form.subject.errors %}
+			<p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span> {{ error|escape }}</p>
+			{% endfor %}
+		</div>
+	</div>
+{% endif %}
+
+{# First render the hidden fields #}
+{% for hidden in form.hidden_fields %}
+{{ hidden }}
+{% endfor %}
+
+{# Then render the visible fields #}
+{% for field in form.visible_fields %}
+	{% if field.label != hide %}
+		{# Add the 'has-error' class if the field has errors #}
+		<div class="form-group{% if field.errors %} has-error{% endif %}">
+
+			{# If we have 'size=' specified, add the col-sm-* modifiers #}
+			{% if size %}
+				<label class="control-label col-sm{{size|add:"-12"}}" for="{{ field.id_for_label }}">{{ field.label }}</label>
+				<div class="col-sm-{{size}}">
+			{% else %}
+				<label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+			{% endif %}
+
+				{# Use widget_tweaks to render the form control in order to add #}
+				{# the required class and to use the help text as placeholder #}
+				{% render_field field class+="form-control" placeholder=field.help_text %}
+				
+				{# Render errors if any #}
+				{% if field.errors %}
+					{# As a help-block #}
+					<span class="help-block">
+						{% for error in field.errors %}
+							{# Each one with a nice exclamation mark #}
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span> {{ error|escape }}<br/>
+						{% endfor %}
+					</span>
+				{% endif %}
+			
+			{# Close the div tag when using sized elements #}
+			{% if size %}
+			</div>
+			{% endif %}
+
+		</div>
+	{% endif %}
+{% endfor %}
