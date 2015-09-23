@@ -71,3 +71,12 @@ drwxrwxr-x. 3 voluto voluto 4096 Sep 23 15:20 2
 drwxrwxr-x. 3 voluto voluto 4096 Sep 23 15:21 3
 lrwxrwxrwx. 1 voluto voluto    1 Sep 23 15:21 latest -> 3
 ```
+
+### Security
+
+The utility takes extra care for sanitising the user's input. Therefore during the extraction of the tarball, the leading path components are stripped and the following attributes are **NOT** preserved:
+
+* Ownership information
+* SELinux attributes
+* Extended attributes
+
