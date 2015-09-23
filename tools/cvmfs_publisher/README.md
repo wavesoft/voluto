@@ -9,7 +9,7 @@ This utility is meant to be deployed on the CVMFS repository manager. It provide
 The `cvmfs_publisher.sh` utility has the following syntax:
 
 ```
-cvmfs_publisher.sh publish <project> <revision> [--activate]
+cat files.tar.gz | cvmfs_publisher.sh publish <project> <revision> [--activate]
 cvmfs_publisher.sh select <project> <revision>
 cvmfs_publisher.sh delete <project> <revision>
 ```
