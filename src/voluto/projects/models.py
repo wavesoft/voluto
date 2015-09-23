@@ -81,6 +81,7 @@ class ProjectFiles(models.Model):
 	TARGZ = 'tgz'
 	TARBZ2 = 'tbz2'
 	TARXZ = 'txz'
+	LZMA = 'lzma'
 	GIT = 'git'
 	SVN = 'svn'
 	CVMFS = 'cvmfs'
@@ -89,6 +90,7 @@ class ProjectFiles(models.Model):
 		(TARGZ, '.tar.gz file'),	# A tarball with GZ compression
 		(TARBZ2, '.tar.bz2 file'),	# A tarball with BZ2 compression
 		(TARXZ, '.tar.xz file'),	# A tarball with XZ compression
+		(LZMA, '.7z (LZMA) file'),	# A zeven-zip (LZMA) archive
 		(GIT, 'GIT Repository'),	# A link to a GIT repository
 		(SVN, 'SVN Repository'),	# A link to an SVN repository
 		(CVMFS, 'CVMFS Link'),		# A link to an SVN repository

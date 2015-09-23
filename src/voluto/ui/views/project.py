@@ -36,30 +36,30 @@ class ProjectFilesForm(forms.Form):
 	tarball = forms.forms.FileField(label='Upload files')
 
 class OpenstackForm(forms.Form):
-	enabled = forms.BooleanField(initial=False)
+	enabled = forms.BooleanField(initial=False, required=False)
 	api_key = forms.CharField(label='API Key', help_text="ex. API")
 	api_secret = forms.CharField(label='API Secret', help_text="ex. Secret")
 
 class DatabridgeForm(forms.Form):
-	enabled = forms.BooleanField(initial=False)
-	domain = forms.CharField(label='Queue Domain', help_text="ex. text4theory.cern.ch")
-	username = forms.CharField(label='Username', help_text="ex. user")
-	password = forms.CharField(label='Password', help_text="ex. secret")
+	enabled = forms.BooleanField(initial=False, required=False)
+	domain = forms.CharField(label='Queue Domain', help_text="ex. text4theory.cern.ch", required=False)
+	username = forms.CharField(label='Username', help_text="ex. user", required=False)
+	password = forms.CharField(label='Password', help_text="ex. secret", required=False)
 
 class ScriptInitForm(forms.Form):
-	enabled = forms.BooleanField(initial=False)
-	script = forms.CharField(label='Script to run', help_text="ex. init.sh")
+	enabled = forms.BooleanField(initial=False, required=False)
+	script = forms.CharField(label='Script to run', help_text="ex. init.sh", required=False)
 
 class ScriptTeardownForm(forms.Form):
-	enabled = forms.BooleanField(initial=False)
-	script = forms.CharField(label='Script to run', help_text="ex. teardown.sh")
+	enabled = forms.BooleanField(initial=False, required=False)
+	script = forms.CharField(label='Script to run', help_text="ex. teardown.sh", required=False)
 
 class NoQueueForm(forms.Form):
-	enabled = forms.BooleanField(initial=True)
+	enabled = forms.BooleanField(initial=True, required=False)
 
 class DatabridgeQueueForm(forms.Form):
-	enabled = forms.BooleanField(initial=False)
-	script = forms.CharField(label='Handler to run', help_text="ex. handler.sh")
+	enabled = forms.BooleanField(initial=False, required=False)
+	script = forms.CharField(label='Handler to run', help_text="ex. handler.sh", required=False)
 	args = forms.ChoiceField(label='How to pass the job description', choices=(
 			('stdin', 'Via STDIN'),
 			('arg', 'As a Command-Line argument'),
@@ -67,8 +67,105 @@ class DatabridgeQueueForm(forms.Form):
 		))
 
 class CopilotQueueForm(forms.Form):
-	enabled = forms.BooleanField(initial=False)
-	server = forms.CharField(label='The XMPP server to connect to', help_text="ex. handler.sh")
+	enabled = forms.BooleanField(initial=False, required=False)
+	server = forms.CharField(label='The XMPP server to connect to', help_text="ex. handler.sh", required=False)
+
+
+##################################
+# Helper Functions
+##################################
+
+def create_component_groups(request):
+	"""
+	Create a set of component groups
+	"""
+
+	# Prepare groups configuration
+	groups = [
+		{
+			'id': 'databridge',
+			'title': '<i class="fa fa-rocket"></i> Databridge API',
+			'color': 1,
+			'form': DatabridgeForm,
+			'link_enable': 'queue-databridge',
+			'environment': [
+				{ 'name': 'DB_DOMAIN', 'description': 'The databridge domain.' },
+				{ 'name': 'DB_USER', 'description': 'The username for the databridge queue.' },
+				{ 'name': 'DB_PASSWORD', 'description': 'The password for te databridge queue.' },
+			]
+		},
+		{
+			'id': 'creditpiggy',
+			'title': '<i class="fa fa-rocket"></i> CreditPiggy API',
+			'color': 1,
+			'form': OpenstackForm,
+			'environment': [
+				{ 'name': 'DB_DOMAIN', 'description': 'The databridge domain.' },
+				{ 'name': 'DB_USER', 'description': 'The username for the databridge queue.' },
+				{ 'name': 'DB_PASSWORD', 'description': 'The password for te databridge queue.' },
+			]
+		},
+
+		{
+			'id': 'script-init',
+			'title': '<i class="fa fa fa-cog"></i> Initialization Script',
+			'color': 2,
+			'description': 'This sript is executed after the job environment is initialized and ready to start.',
+			'form': ScriptInitForm,
+		},
+
+		{
+			'id': 'queue-none',
+			'title': '<i class="fa fa-hourglass-half"></i> No Queue Logic',
+			'color': 3,
+			'form': NoQueueForm,
+			'radiogroup': 'queue'
+		},
+
+		{
+			'id': 'queue-databridge',
+			'title': '<i class="fa fa-hourglass-half"></i> Databridge Queue Logic',
+			'color': 3,
+			'description': 'The databridge queue logic will call the specified handling application when a new job arrives. The job should exit upon successful completion of it\'s task.',
+			'form': DatabridgeQueueForm,
+			'radiogroup': 'queue',
+			'environment': [
+				{ 'name': 'DB_JOB', 'description': 'The full path to a file containing the contents of the incoming job description.' },
+			]
+		},
+
+		{
+			'id': 'queue-copilot',
+			'title': '<i class="fa fa-hourglass-half"></i> Co-Pilot Queue Logic',
+			'color': 3,
+			'description': 'The co-pilot will set-up and run a co-pilot agent that will be responsible for downloading and executing the jobs.',
+			'form': CopilotQueueForm,
+			'radiogroup': 'queue',
+		},
+
+		{
+			'id': 'script-teardown',
+			'title': '<i class="fa fa fa-cog"></i> Teardown Script',
+			'color': 2,
+			'description': 'This sript is executed when the job is completed and it is about to cleanup.',
+			'form': ScriptTeardownForm,
+		},
+	]
+
+	# Instantiate forms
+	for i in range(0, len(groups)):
+
+		# Get form class
+		form_class = groups[i]['form']
+
+		# Instantiate bound or unbound
+		if request.method == 'POST':
+			groups[i]['form'] = form_class(request.POST, prefix="group-%s" % groups[i]['id'])
+		else:
+			groups[i]['form'] = form_class(prefix="group-%s" % groups[i]['id'])
+
+	# Return groups
+	return groups
 
 
 ##################################
@@ -80,7 +177,9 @@ def list(request):
 	"""
 	The project listing interface
 	"""
-	return { }
+	return {
+		'projects': Project.objects.all()
+	}
 
 def manage_publish(request, project, revision):
 	"""
@@ -158,77 +257,6 @@ def manage(request, project):
 			},
 
 			# Groups
-			'groups': [
-
-				{
-					'id': 'databridge',
-					'title': '<i class="fa fa-rocket"></i> Databridge API',
-					'color': 1,
-					'form': DatabridgeForm(),
-					'link_enable': 'queue-databridge',
-					'environment': [
-						{ 'name': 'DB_DOMAIN', 'description': 'The databridge domain.' },
-						{ 'name': 'DB_USER', 'description': 'The username for the databridge queue.' },
-						{ 'name': 'DB_PASSWORD', 'description': 'The password for te databridge queue.' },
-					]
-				},
-				{
-					'id': 'creditpiggy',
-					'title': '<i class="fa fa-rocket"></i> CreditPiggy API',
-					'color': 1,
-					'form': OpenstackForm(),
-					'environment': [
-						{ 'name': 'DB_DOMAIN', 'description': 'The databridge domain.' },
-						{ 'name': 'DB_USER', 'description': 'The username for the databridge queue.' },
-						{ 'name': 'DB_PASSWORD', 'description': 'The password for te databridge queue.' },
-					]
-				},
-
-				{
-					'id': 'script-init',
-					'title': '<i class="fa fa fa-cog"></i> Initialization Script',
-					'color': 2,
-					'description': 'This sript is executed after the job environment is initialized and ready to start.',
-					'form': ScriptInitForm(),
-				},
-
-				{
-					'id': 'queue-none',
-					'title': '<i class="fa fa-hourglass-half"></i> No Queue Logic',
-					'color': 3,
-					'form': NoQueueForm(),
-					'radiogroup': 'queue'
-				},
-
-				{
-					'id': 'queue-databridge',
-					'title': '<i class="fa fa-hourglass-half"></i> Databridge Queue Logic',
-					'color': 3,
-					'description': 'The databridge queue logic will call the specified handling application when a new job arrives. The job should exit upon successful completion of it\'s task.',
-					'form': DatabridgeQueueForm(),
-					'radiogroup': 'queue',
-					'environment': [
-						{ 'name': 'DB_JOB', 'description': 'The full path to a file containing the contents of the incoming job description.' },
-					]
-				},
-
-				{
-					'id': 'queue-copilot',
-					'title': '<i class="fa fa-hourglass-half"></i> Co-Pilot Queue Logic',
-					'color': 3,
-					'description': 'The co-pilot will set-up and run a co-pilot agent that will be responsible for downloading and executing the jobs.',
-					'form': CopilotQueueForm(),
-					'radiogroup': 'queue',
-				},
-
-				{
-					'id': 'script-teardown',
-					'title': '<i class="fa fa fa-cog"></i> Teardown Script',
-					'color': 2,
-					'description': 'This sript is executed when the job is completed and it is about to cleanup.',
-					'form': ScriptTeardownForm(),
-				},
-
-			]
+			'groups': create_component_groups(request)
 		}
 	)

@@ -81,8 +81,9 @@ def handle_tarball_upload( project, uploaded_file ):
 	files_record = ProjectFiles( project=project, src="file:%s" % upload_file, number=version )
 
 	# Discard unsupported archive types
+	print ">>> %s <<<" % uploaded_file.content_type
 	if uploaded_file.content_type == "application/zip":
-		files_record.filetype = "zip"
+		files_record.filetype = ProjectFiles.ZIP
 	elif uploaded_file.content_type == "application/x-gzip":
 		if ('.tar' in uploaded_file.name) or ('.tgz' in uploaded_file.name):
 			files_record.filetype = ProjectFiles.TARGZ
@@ -105,6 +106,10 @@ def handle_tarball_upload( project, uploaded_file ):
 			files_record.filetype = ProjectFiles.TARBZ2
 		elif ('.tar' in uploaded_file.name) or ('.txz' in uploaded_file.name):
 			files_record.filetype = ProjectFiles.TARXZ
+		elif uploaded_file.name.endswith('.zip'):
+			files_record.filetype = ProjectFiles.ZIP
+		elif uploaded_file.name.endswith('.7z'):
+			files_record.filetype = ProjectFiles.ZIP
 		else:
 			raise UploadError("The uploaded file is not in one of the supported file formats!")
 	else:

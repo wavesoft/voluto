@@ -139,11 +139,15 @@
 
 			<h2>Queue Configuration</h2>
 			<div class="grp-option-selector">
-				
-				{% for grp in groups %}
-					{% include "snippet/group-option.html" with group=grp %}
-				{% endfor %}
-
+				<form method="post" action="?form-config">
+					{% csrf_token %}
+					{% for grp in groups %}
+						{% include "snippet/group-option.html" with group=grp %}
+					{% endfor %}
+					<div>
+						<input type="submit" value="Apply Changes" class="btn btn-default" />
+					</div>
+				</form>
 			</div>
 
 		</div>

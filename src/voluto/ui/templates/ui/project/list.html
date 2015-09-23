@@ -6,10 +6,11 @@
 			<th>Name</th>
 			<th>Manager</th>
 		</tr>
-		{% if items %}
-			{% for item in items %}
+		{% if projects %}
+			{% for project in projects %}
 			<tr> 
-				<td>{{ item.name }}</td>
+				<td>{{ project.name }}</td>
+				<td><a href="{% url 'project.manage' project=project.uuid %}" class="btn btn-sm btn-info">Manage</a></td>
 			</tr>
 			{% endfor %}
 		{% else %}
