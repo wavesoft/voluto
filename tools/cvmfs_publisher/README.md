@@ -56,8 +56,8 @@ BASE_DIRECTORY="/cvmfs/myrepo.cern.ch/path/to/base"
 CVMFS_REPOS="sft.cern.ch"
 ```
 
-Youa re now ready!
-
+You are now ready!
+ 
 ### Files Versioning
 
 This utility uploads the tarball contents to a project directory using a versioning scheme. Each tarball is extracted into a versioned sub-directory and then it's linked to the `latest` symlink.
