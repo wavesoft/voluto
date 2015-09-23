@@ -9,12 +9,12 @@ This utility is meant to be deployed on the CVMFS repository manager. It provide
 The `cvmfs_publisher.sh` utility has the following syntax:
 
 ```
-cvmfs_publisher.sh publish <project> <revision> [activate]
+cvmfs_publisher.sh publish <project> <revision> [--activate]
 cvmfs_publisher.sh select <project> <revision>
 cvmfs_publisher.sh delete <project> <revision>
 ```
 
-* The __publish__ option expects a gzip tarball stream through STDIN end extracts it's contents in the appropriate project directory in the CVMFS repository. If the `activate` parameter is specified, that revision will be selected as the 'latest'.
+* The __publish__ option expects a gzip tarball stream through STDIN end extracts it's contents in the appropriate project directory in the CVMFS repository. If the `--activate` parameter is specified, that revision will be selected as the 'latest'.
 * The __select__ option selects a previous revision of the specified project and marks it as the 'latest'.
 * The __delete__ option deletes a previous revision of the specified project. This operation cannot be performed if that revision is the 'latest'.
 
@@ -30,7 +30,7 @@ img/        index.html  src/
 Also we assume that you already have generated an SSH keypair for logging into our example repository manager in `cvmfs.example.com`, for the user `user`. To upload that files to the cvmfs repository, use:
 
 ```shell
-tar -zc * | ssh -i id_rsa user@cvmfs.example.com cvmfs_publisher.sh publish project 2 activate
+~$ tar -zc * | ssh -i id_rsa user@cvmfs.example.com cvmfs_publisher.sh publish test_project 2 --activate
 ```
 
 This will do the following:

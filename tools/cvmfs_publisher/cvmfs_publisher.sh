@@ -12,7 +12,7 @@ CVMFS_REPOS="sft.cern.ch"
 
 # Help screen
 function help_and_exit {
-	echo "Usage: $0 [publish|select|delete] <project> [<revision>] [activate]"
+	echo "Usage: $0 [publish|select|delete] <project> <revision> [--activate]"
 	echo ""
 	echo " publish : Extracts a tarball streamed through STDIN to the project's folder,"
 	echo "           under the specified revision. If 'activate' is also specified, this"
@@ -110,7 +110,7 @@ case $P_ACTION in
 			ln -s "${P_REVISION}" "${LINK_FILE}"
 
 		# Update 'latest' target if asked to do so
-		elif [ "$4" == "activate" ]; then
+		elif [ "$4" == "--activate" ]; then
 			[ -L "${LINK_FILE}" ] && rm "${LINK_FILE}"
 			ln -s "${P_REVISION}" "${LINK_FILE}"
 		fi
