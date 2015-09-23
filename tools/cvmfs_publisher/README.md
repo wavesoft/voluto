@@ -1,8 +1,8 @@
 # CVMFS Publisher
 
-This utility is used for programmatically updating the files of a particular voluto project in the CVMFS server.
+This utility is used for programmatically updating the files of a particular voluto project in the CVMFS repository.
 
-This utility is meant to be deployed on the CVMFS repository manager. It provides the mechanism to send a batch of files over SSH directly to the CVMFS repository.
+This utility is meant to be deployed on the CVMFS release manager. It provides the mechanism to send a batch of files over SSH directly to the CVMFS repository.
 
 ## Usage
 
@@ -27,7 +27,7 @@ Let's say that you have a couple of files that you want to publish through CVMFS
 img/        index.html  src/
 ```
 
-Also we assume that you already have generated an SSH keypair for logging into our example repository manager in `cvmfs.example.com`, for the user `user`. To upload that files to the cvmfs repository, use:
+Also we assume that you already have generated an SSH keypair for logging into our example release manager in `cvmfs.example.com`, for the user `user`. To upload that files to the cvmfs repository, use:
 
 ```shell
 ~$ tar -zc * | ssh -i id_rsa user@cvmfs.example.com cvmfs_publisher.sh publish test_project 2 --activate
@@ -42,7 +42,7 @@ This will do the following:
 
 ## Setting up 
 
-You should first create an SSH keypair that you will use for password-less log-in to the CVMFS repository manager.
+You should first create an SSH keypair that you will use for password-less log-in to the CVMFS release manager.
 
 1. Generate an SSH keypair using the command `ssh-keygen -t rsa -b 4096`
 2. Append the public key to the `/home/cvmfs_user/.ssh/authorized_keys`
